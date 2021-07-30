@@ -13,8 +13,6 @@ from argparse import ArgumentParser
 from ast import literal_eval
 from pathlib import Path
 from warnings import simplefilter
-simplefilter('ignore', category=FutureWarning)
-simplefilter('ignore', category=DeprecationWarning)
 
 from loguru import logger
 
@@ -22,7 +20,10 @@ from generative_models.ctgan import CTGAN
 from generative_models.data_synthesiser import (
     IndependentHistogram, BayesianNet, PrivBayes)
 from generative_models.pate_gan import PATEGAN
-from utils.datagen import load_s3_data_as_df, load_local_data_as_df
+from utils.datagen import load_local_data_as_df
+
+simplefilter('ignore', category=FutureWarning)
+simplefilter('ignore', category=DeprecationWarning)
 
 
 DEFAULT_SAMPLE_SIZE = 1000
@@ -32,12 +33,8 @@ def main():
     """Execute the PrivBayes mechanism."""
     # Parse the arguments
     argparser = ArgumentParser()
-    datasource = argparser.add_mutually_exclusive_group()
-    datasource.add_argument('--s3name', '-S3', type=str, choices=[
-                            'adult', 'census', 'credit', 'alarm', 'insurance'],
-                            help='Name of the dataset to run on')
-    datasource.add_argument('--datapath', '-D', type=str,
-                            help='Path to a local data file')
+    argparser.add_argument('--datapath', '-D', type=str, required=True,
+                           help='Path to a local data file')
     argparser.add_argument('--mechanism', '-M', type=str, choices=[
         'IndependentHistogram', 'BayesianNet', 'PrivBayes', 'CTGAN', 'PATEGAN'
         ], default='PrivBayes', help='The mechanism to use')
@@ -53,15 +50,9 @@ def main():
     args = argparser.parse_args()
 
     # Load data
-    if args.s3name:
-        raw_pop, metadata = load_s3_data_as_df(args.s3name)
-        dname = args.s3name
-    elif args.datapath:
-        raw_pop, metadata = load_local_data_as_df(Path(args.datapath))
-        dname = args.datapath.split('/')[-1]
-    else:
-        raise ValueError('Please provide a dataset')
-    logger.info(f'Loaded data {dname}:\n{raw_pop}')
+    raw_pop, metadata = load_local_data_as_df(Path(args.datapath))
+    dataset_name = args.datapath.split('/')[-1]
+    logger.info(f'Loaded dataset {dataset_name}:\n{raw_pop}')
     logger.info(f'Loaded the corresponding metadata: {metadata}')
 
     # Initialize the mechanism
