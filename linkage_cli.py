@@ -217,8 +217,8 @@ def main():
             logger.info('Finished: attack training.')
 
     # ============================== EVALUATION ===============================
-    # Format: {target id => { privacy mechanism name => {
-    #              iteration number => { feature extractor => {
+    # Format: {target id => { privacy mechanism => { iteration number => {
+    #              feature extractor => {
     #                  'Secret' => [ the targets presence as 0 or 1 ],
     #                  'AttackerGuess' => [ the attacker guesses (0 or 1) ]
     #          }}}}}

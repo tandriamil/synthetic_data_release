@@ -16,3 +16,7 @@ paper/*.blg
 paper/*.out
 syn_data_files/
 notebooks_local/
+
+# Specific to the adult dataset
+data/adult.csv
+
