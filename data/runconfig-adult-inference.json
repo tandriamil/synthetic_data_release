@@ -1,0 +1,21 @@
+{
+  "sensitiveAttributes": {
+    "salary": "Classification",
+    "fnlwgt": "LinReg"},
+  "nIter": 5,
+  "sizeRawT": 1000,
+  "sizeSynT": 1000,
+  "nSynT": 5,
+  "Targets": ["ID1247", "ID1369", "ID1483", "ID1529", "ID1617"],
+  "nTargets": 5,
+  "generativeModels": {
+    "IndependentHistogram": [[45]],
+    "BayesianNet": [[45, 1]],
+    "PrivBayes": [[45, 1, 1]],
+    "CTGAN": [[128, [256, 256], [256, 256], 10E-6, 500, 100]],
+    "PATEGAN": [[1, 1E-5]]
+  },
+  "sanitisationTechniques": {
+    "SanitiserNHS": [[45, 1, 0.95, 10, [], ["age", "race", "sex"]]]
+  }
+}
