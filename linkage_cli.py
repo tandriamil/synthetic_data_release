@@ -217,10 +217,11 @@ def main():
             logger.info('Finished: attack training.')
 
     # ============================== EVALUATION ===============================
-    # Format: {target id => { privacy mechanism name => {iteration number => {
-    #              'Secret' => [ the targets presence as 0 (out) or 1 (in) ],
-    #              'AttackerGuess' => [ the guesses of the attacker (0 or 1) ]
-    #          }}}}
+    # Format: {target id => { privacy mechanism name => {
+    #              iteration number => { feature extractor => {
+    #                  'Secret' => [ the targets presence as 0 or 1 ],
+    #                  'AttackerGuess' => [ the attacker guesses (0 or 1) ]
+    #          }}}}}
     results_target_privacy = {
         tid: {privacy_model.__name__: {}
               for privacy_model in gen_model_list + san_tech_list}
